@@ -39,6 +39,52 @@ Example API call:
 http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=<APIKEY>
 ```
 
+This should give you a response similar to:
+
+```
+{
+  "coord": {
+    "lon":-0.13,
+    "lat":51.51
+  },
+  "weather":[
+    {
+      "id":803,
+      "main":"Clouds",
+      "description":"broken clouds",
+      "icon":"04d"
+    }
+  ],
+  "base":"stations",
+  "main":{
+    "temp":286.33,
+    "feels_like":278.88,
+    "temp_min":285.37,
+    "temp_max":287.04,
+    "pressure":1007,
+    "humidity":42
+  },
+  "visibility":10000,
+  "wind":{
+    "speed":7.93,
+    "deg":314
+  },
+  "clouds":{"all":77},
+  "dt":1601055181,
+  "sys": {
+    "type":3,
+    "id":268730,
+    "country":"GB",
+    "sunrise":1601013115,
+    "sunset":1601056333
+  },
+  "timezone":3600,
+  "id":2643743,
+  "name":"London",
+  "cod":200
+}
+```
+
 ## Repository format
 
 Pick your own repository format (directories/folders, download scripts, SQL tables)
