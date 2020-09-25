@@ -30,7 +30,14 @@ So in summary, at the very least you must provide:
 ## Data source
 
 Get free weather data using the [OpenWeather API](https://openweathermap.org/api).
+
 We will provide you with an API key for use during this project.
+
+Example API call:
+
+```
+http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=<APIKEY>
+```
 
 ## Repository format
 
