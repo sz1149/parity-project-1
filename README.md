@@ -43,7 +43,7 @@ This should give you a response similar to:
 
 ```json
 {
-  "coord": {
+  "coord":{
     "lon":-0.13,
     "lat":51.51
   },
@@ -69,9 +69,11 @@ This should give you a response similar to:
     "speed":7.93,
     "deg":314
   },
-  "clouds":{"all":77},
+  "clouds":{
+    "all":77
+  },
   "dt":1601055181,
-  "sys": {
+  "sys":{
     "type":3,
     "id":268730,
     "country":"GB",
