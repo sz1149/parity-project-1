@@ -7,19 +7,25 @@ problems. The project should not take more than four to eight hours to complete.
 
 ## Deliverables
 
-We would like you to download some weather data (from anywhere in the
-world - your choice!) using a script you author. There must be data from
-at least **10** locations.
+We would like you to download some weather data (from individual weather
+stations anywhere in the world - your choice - but must be from the same
+country!) using a script you author. There must be data from at least
+**10** locations that are all within the same country.
 
 Take that downloaded data, transform it into a more simplified format,
-and store it in a SQL table. How you decide to do that is up to you,
+and store it in a SQL table(s). How you decide to do that is up to you,
 but be prepared to justify any data simplifications you make!
+
+Additionally, create a new table that stores aggregations of the downloaded data, for
+example, average rainfall or average humidity across the region of weather stations.
 
 So in summary, at the very least you must provide:
 
 1. Data download script
 2. Data transformation script
 3. SQL table(s) storing the transformed data
+4. Data aggregation script
+5. SQL table(s) storing the newly aggregated data
 
 ## Data source
 
