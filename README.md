@@ -29,7 +29,8 @@ So in summary, at the very least you must provide:
 
 ## Data source
 
-Get free weather data using the [ODWeather API](https://api.oceandrivers.com/static/docs.html)
+Get free weather data using the [OpenWeather API](https://openweathermap.org/api).
+We will provide you with an API key for use during this project.
 
 ## Repository format
 
