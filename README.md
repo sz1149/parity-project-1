@@ -41,7 +41,7 @@ http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=<APIKEY>
 
 This should give you a response similar to:
 
-```
+```json
 {
   "coord": {
     "lon":-0.13,
