@@ -15,11 +15,7 @@ namespace ParityFactory.Weather.Test.unit.Services.OpenWeatherApi
     {
         public DownloadServiceTests()
         {
-            Environment.SetEnvironmentVariable("DATA_DIRECTORY", "./data");
-            Environment.SetEnvironmentVariable("WEATHER_API_ENDPOINT",
-                "http://api.openweathermap.org/data/2.5/forecast");
-            Environment.SetEnvironmentVariable("WEATHER_API_ENDPOINTKEY", "");
-            Environment.SetEnvironmentVariable("MAX_CONCURRENCY", "4");
+            TestHelpers.ConfigureEnvironment();
         }
 
         [TestMethod]

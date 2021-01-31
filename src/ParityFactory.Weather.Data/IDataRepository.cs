@@ -4,6 +4,6 @@ namespace ParityFactory.Weather.Data
 {
     public interface IDataRepository
     {
-        Task BulkInsertAsync();
+        Task BulkInsertAsync<T>(string tableName, T records);
     }
 }

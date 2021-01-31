@@ -1,9 +1,7 @@
 using System;
-using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using ParityFactory.Weather.Services.OpenWeatherApi;
 using Polly;
-using Polly.Extensions.Http;
 
 namespace ParityFactory.Weather.Services.Extensions
 {

@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace ParityFactory.Weather.Models.OpenWeatherApi
+namespace ParityFactory.Weather.Models
 {
-    public class Observation
+    public class Condition
     {
         [JsonPropertyName("id")]
         public short Id { get; set; }

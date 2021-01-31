@@ -17,7 +17,7 @@ namespace ParityFactory.Weather.Models.OpenWeatherApi
         public long Sunrise { get; set; }
 
         [JsonPropertyName("sunset")]
-        public int Sunset { get; set; }
+        public long Sunset { get; set; }
 
         [JsonPropertyName("timezone")]
         public int TimezoneOffset { get; set; }

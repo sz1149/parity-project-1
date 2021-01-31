@@ -26,16 +26,16 @@ namespace ParityFactory.Weather.Test.unit.Models
             Assert.AreEqual(41.6005f, currentWeather.City.Coordinate.Latitude);
             Assert.AreEqual(-93.6091f, currentWeather.City.Coordinate.Longitude);
 
-            Assert.AreEqual(40, currentWeather.WeatherReadings.Count);
+            Assert.AreEqual(40, currentWeather.WeatherObservations.Count);
 
-            var weatherReading = currentWeather.WeatherReadings.First();
+            var weatherReading = currentWeather.WeatherObservations.First();
             Assert.AreEqual(1612072800, weatherReading.Timestamp);
 
-            Assert.AreEqual(1, weatherReading.Observations.Length);
-            Assert.AreEqual(601, weatherReading.Observations[0].Id);
-            Assert.AreEqual("Snow", weatherReading.Observations[0].Title);
-            Assert.AreEqual("snow", weatherReading.Observations[0].Description);
-            Assert.AreEqual("13n", weatherReading.Observations[0].Icon);
+            Assert.AreEqual(1, weatherReading.Conditions.Length);
+            Assert.AreEqual(601, weatherReading.Conditions[0].Id);
+            Assert.AreEqual("Snow", weatherReading.Conditions[0].Title);
+            Assert.AreEqual("snow", weatherReading.Conditions[0].Description);
+            Assert.AreEqual("13n", weatherReading.Conditions[0].Icon);
 
             Assert.AreEqual(272.86f, weatherReading.Measurement.Temperature);
             Assert.AreEqual(266.42f, weatherReading.Measurement.FeelsLikeTemperature);
@@ -58,15 +58,15 @@ namespace ParityFactory.Weather.Test.unit.Models
             var apiResponseJsonFilename =
                 Path.Combine("unit", "JsonFiles", "CompleteWeatherRecord.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.WeatherObservation>(apiResponseText);
 
             Assert.AreEqual(1601055181, apiResponse.Timestamp);
 
-            Assert.AreEqual(1, apiResponse.Observations.Length);
-            Assert.AreEqual(803, apiResponse.Observations[0].Id);
-            Assert.AreEqual("Clouds", apiResponse.Observations[0].Title);
-            Assert.AreEqual("broken clouds", apiResponse.Observations[0].Description);
-            Assert.AreEqual("04d", apiResponse.Observations[0].Icon);
+            Assert.AreEqual(1, apiResponse.Conditions.Length);
+            Assert.AreEqual(803, apiResponse.Conditions[0].Id);
+            Assert.AreEqual("Clouds", apiResponse.Conditions[0].Title);
+            Assert.AreEqual("broken clouds", apiResponse.Conditions[0].Description);
+            Assert.AreEqual("04d", apiResponse.Conditions[0].Icon);
 
             Assert.AreEqual(286.33f, apiResponse.Measurement.Temperature);
             Assert.AreEqual(278.88f, apiResponse.Measurement.FeelsLikeTemperature);
@@ -97,11 +97,11 @@ namespace ParityFactory.Weather.Test.unit.Models
             var apiResponseJsonFilename =
                 Path.Combine("unit", "JsonFiles", "MissingModelsResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.WeatherObservation>(apiResponseText);
 
             Assert.AreEqual(1601055181, apiResponse.Timestamp);
 
-            Assert.IsNull(apiResponse.Observations);
+            Assert.IsNull(apiResponse.Conditions);
             Assert.IsNull(apiResponse.Measurement);
             Assert.IsNull(apiResponse.Cloud);
             Assert.IsNull(apiResponse.Rain);
@@ -115,7 +115,7 @@ namespace ParityFactory.Weather.Test.unit.Models
             var apiResponseJsonFilename =
                 Path.Combine("unit", "JsonFiles", "MissingModelPropertiesResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.WeatherObservation>(apiResponseText);
 
             Assert.IsNull(apiResponse.Measurement.Temperature);
             Assert.IsNull(apiResponse.Measurement.FeelsLikeTemperature);

@@ -6,7 +6,7 @@ namespace ParityFactory.Weather.Models.OpenWeatherApi
     public class CurrentWeatherResponse
     {
         [JsonPropertyName("list")]
-        public List<Weather> WeatherReadings { get; set; }
+        public List<WeatherObservation> WeatherObservations { get; set; }
 
         [JsonPropertyName("city")]
         public City City { get; set; }

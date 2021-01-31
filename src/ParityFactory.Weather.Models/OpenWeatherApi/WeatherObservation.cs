@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace ParityFactory.Weather.Models.OpenWeatherApi
 {
-    public class Weather
+    public class WeatherObservation
     {
         [JsonPropertyName("dt")]
         public long Timestamp { get; set; }
@@ -11,7 +11,7 @@ namespace ParityFactory.Weather.Models.OpenWeatherApi
         public Measurement Measurement { get; set; }
 
         [JsonPropertyName("weather")]
-        public Observation[] Observations { get; set; }
+        public Condition[] Conditions { get; set; }
 
         [JsonPropertyName("clouds")]
         public Cloud Cloud { get; set; }

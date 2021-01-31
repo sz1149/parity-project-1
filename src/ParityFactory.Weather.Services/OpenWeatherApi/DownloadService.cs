@@ -84,18 +84,19 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
 
         public virtual async Task<string> SaveAsync(string city, Stream stream)
         {
-            var dateTime = DateTime.UtcNow;
-
-            var directoryToSaveTo = Path.Combine(_dataDirectory, dateTime.Year.ToString(), dateTime.Month.ToString(),
-                dateTime.Day.ToString(), dateTime.Hour.ToString());
-            Directory.CreateDirectory(directoryToSaveTo);
-
-            var filenameToSave = Path.Combine(directoryToSaveTo, $"{city}_{dateTime.Minute}_{dateTime.Second}.json");
-            await using var fileStream = File.Create(filenameToSave);
+            var directoryToSaveTo = DirectoryUtil.GetUnprocessedDirectoryName(_dataDirectory);
+            var filenameToSaveAs = GetFileName(city, DateTime.UtcNow);
+            var filenameIncludingPath = Path.Combine(directoryToSaveTo, filenameToSaveAs);
+            await using var fileStream = File.Create(filenameIncludingPath);
             stream.Seek(0, SeekOrigin.Begin);
             await stream.CopyToAsync(fileStream);
             await stream.DisposeAsync();
-            return filenameToSave;
+            return filenameIncludingPath;
+        }
+
+        public virtual string GetFileName(string city, DateTime utcDateTime)
+        {
+            return $"{city.Replace(" ", "_")}_{utcDateTime:yyyyMMddHHmmss}.json";
         }
     }
 }

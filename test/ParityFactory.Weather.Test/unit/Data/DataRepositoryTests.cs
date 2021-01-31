@@ -30,7 +30,7 @@ namespace ParityFactory.Weather.Test.unit.Data
         [TestMethod]
         public async Task Test_BulkInsertAsync()
         {
-            _dataRepository.BulkInsertAsync();
+            await _dataRepository.BulkInsertAsync("data", "test");
         }
     }
 }

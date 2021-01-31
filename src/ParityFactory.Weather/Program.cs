@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using ParityFactory.Weather.Data.Extensions;
+using ParityFactory.Weather.Models.Extensions;
 using ParityFactory.Weather.Services.Extensions;
 
 namespace ParityFactory.Weather
@@ -50,6 +51,7 @@ namespace ParityFactory.Weather
                 .AddScoped<ICommandHandler, CommandHandler>()
                 .AddDataRepository()
                 .AddWeatherServices()
+                .AddAutoMapping()
                 .BuildServiceProvider();
 
             return serviceProvider;

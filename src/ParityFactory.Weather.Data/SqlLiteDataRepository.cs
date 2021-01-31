@@ -20,7 +20,7 @@ namespace ParityFactory.Weather.Data
         // Lightweight for POC purpose.
         // Implementation can easily be swapped to SQL Server, MySQL with DI change.
         // Alternatively a strategy pattern, but running out of time.
-        public virtual async Task BulkInsertAsync()
+        public virtual async Task BulkInsertAsync<T>(string tableName, T records)
         {
             await using var connection = new SqliteConnection(_connectionString);
             connection.Open();
@@ -28,11 +28,11 @@ namespace ParityFactory.Weather.Data
             await using var transaction = await connection.BeginTransactionAsync();
 
             var command = connection.CreateCommand();
-            command.CommandText = @"INSERT INTO data(test) VALUES ($value)";
+            command.CommandText = $"INSERT INTO {tableName} VALUES ($value)";
 
             var parameter = command.CreateParameter();
             parameter.ParameterName = "$value";
-            parameter.Value = "testValueParam";
+            parameter.Value = records;
             command.Parameters.Add(parameter);
             
             await command.ExecuteNonQueryAsync();
