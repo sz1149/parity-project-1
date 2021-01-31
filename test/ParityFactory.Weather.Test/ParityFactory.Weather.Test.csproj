@@ -26,16 +26,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="unit\Models\JsonFiles\CompleteApiResponse.json">
+        <None Update="unit/JsonFiles/CompleteApiResponse.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="unit\Models\JsonFiles\MissingModelsResponse.json">
+        <None Update="unit/JsonFiles/MissingModelPropertiesResponse.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="unit\Models\JsonFiles\MissingModelPropertiesResponse.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <None Update="unit/JsonFiles/MissingModelsResponse.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
 </Project>
-

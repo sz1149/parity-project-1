@@ -27,7 +27,7 @@ namespace ParityFactory.Weather.Test.unit
             _commandHandler.ExecuteAsync("aggregate");
 
             A.CallTo(() => _aggregationService.AggregateAsync()).MustHaveHappenedOnceExactly();
-            A.CallTo(() => _downloadService.DownloadAsync()).MustNotHaveHappened();
+            A.CallTo(() => _downloadService.DownloadAsync(A<string[]>._)).MustNotHaveHappened();
             A.CallTo(() => _importService.ImportAsync()).MustNotHaveHappened();
         }
 
@@ -37,7 +37,9 @@ namespace ParityFactory.Weather.Test.unit
             _commandHandler.ExecuteAsync("download");
 
             A.CallTo(() => _aggregationService.AggregateAsync()).MustNotHaveHappened();
-            A.CallTo(() => _downloadService.DownloadAsync()).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _downloadService.DownloadAsync(
+                A<string[]>.That.Matches(cities => cities.Length == 10)))
+                .MustHaveHappenedOnceExactly();
             A.CallTo(() => _importService.ImportAsync()).MustNotHaveHappened();
         }
 
@@ -47,7 +49,7 @@ namespace ParityFactory.Weather.Test.unit
             _commandHandler.ExecuteAsync("import");
 
             A.CallTo(() => _aggregationService.AggregateAsync()).MustNotHaveHappened();
-            A.CallTo(() => _downloadService.DownloadAsync()).MustNotHaveHappened();
+            A.CallTo(() => _downloadService.DownloadAsync(A<string[]>._)).MustNotHaveHappened();
             A.CallTo(() => _importService.ImportAsync()).MustHaveHappenedOnceExactly();
         }
     }

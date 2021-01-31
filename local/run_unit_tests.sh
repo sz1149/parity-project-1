@@ -1,3 +1,5 @@
+source local/env.sh
+
 dotnet test \
     /p:CollectCoverage=true \
     /p:Threshold=80 \

@@ -19,17 +19,23 @@ namespace ParityFactory.Weather
 
         public virtual async Task ExecuteAsync(string command)
         {
-            if (command == "aggregate")
+            switch (command)
             {
-                await _aggregationService.AggregateAsync();
-            }
-            if (command == "download")
-            {
-                await _downloadService.DownloadAsync();
-            }
-            if (command == "import")
-            {
-                await _importService.ImportAsync();
+                case "aggregate":
+                    await _aggregationService.AggregateAsync();
+                    break;
+                case "download":
+                    // TODO: config variable?  user input?
+                    var cities = new[]
+                    {
+                        "des moines", "johnston", "norwalk", "cedar rapids", "council bluffs", "davenport",
+                        "fort dodge", "mason city", "sioux city", "altoona"
+                    };
+                    await _downloadService.DownloadAsync(cities);
+                    break;
+                case "import":
+                    await _importService.ImportAsync();
+                    break;
             }
         }
     }

@@ -12,7 +12,7 @@ namespace ParityFactory.Weather.Test.unit.Models
         public void Test_ApiResponse_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
-                Path.Combine("unit", "Models", "JsonFiles", "CompleteApiResponse.json");
+                Path.Combine("unit", "JsonFiles", "CompleteApiResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
             var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
 
@@ -63,7 +63,7 @@ namespace ParityFactory.Weather.Test.unit.Models
         public void Test_ApiResponse_With_MissingModels_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
-                Path.Combine("unit", "Models", "JsonFiles", "MissingModelsResponse.json");
+                Path.Combine("unit", "JsonFiles", "MissingModelsResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
             var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
 
@@ -93,7 +93,7 @@ namespace ParityFactory.Weather.Test.unit.Models
         public void Test_ApiResponse_With_MissingModelProperties_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
-                Path.Combine("unit", "Models", "JsonFiles", "MissingModelPropertiesResponse.json");
+                Path.Combine("unit", "JsonFiles", "MissingModelPropertiesResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
             var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
 
