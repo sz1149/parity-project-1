@@ -21,6 +21,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\ParityFactory.Weather.Models\ParityFactory.Weather.Models.csproj" />
+        <ProjectReference Include="..\..\src\ParityFactory.Weather.Services\ParityFactory.Weather.Services.csproj" />
+        <ProjectReference Include="..\..\src\ParityFactory.Weather\ParityFactory.Weather.csproj" />
     </ItemGroup>
 
     <ItemGroup>
