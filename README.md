@@ -1,5 +1,5 @@
 ## User Scripts
-- Download weather data files to SQL:
+- Download weather data files to disk:
 ```bash
 ./local/download.sh
 ```
@@ -14,7 +14,15 @@
 ./local/import.sh
 ```
 
-## Environment variables
+## Developer notes
+To run this project locally:
+ * Install .NET 5.0 if not installed
+ * Set/Configure environment variables (section below)
+ * Run from the command line using dotnet run or configure your IDE
+ * Entry point is project ParityFactory.Weather
+ * Program.cs is expecting an argument (download,import,aggregate)
+ 
+### Environment variables
 * DATA_DIRECTORY
   * Directory to save files to
 * WEATHER_API_ENDPOINT
@@ -24,12 +32,17 @@
 * MAX_CONCURRENCY
   * Maximum concurrency
 
-
-## Local debugging
-
-
 ## Execute unit tests
-- Using local dotnet SDK:
+- Using local dotnet SDK (note you will need to set environment variables, see above):
+```
+dotnet test \
+    /p:CollectCoverage=true \
+    /p:Threshold=80 \
+    /p:CoverletOutputFormat=lcov \
+    /p:CoverletOutput="../../lcov.info"
+```
+
+- Using a script:
 ```bash
 ./local/run_unit_tests.sh
 ```
