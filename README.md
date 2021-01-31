@@ -31,6 +31,8 @@ To run this project locally:
   * API key to use
 * MAX_CONCURRENCY
   * Maximum concurrency
+* DB_CONNECTION
+  * Database connection string
 
 ## Execute unit tests
 - Using local dotnet SDK (note you will need to set environment variables, see above):

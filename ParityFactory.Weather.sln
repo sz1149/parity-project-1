@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParityFactory.Weather", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParityFactory.Weather.Services", "src\ParityFactory.Weather.Services\ParityFactory.Weather.Services.csproj", "{C1AF5953-C13F-4662-9F9B-2AEA2AD1C9D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParityFactory.Weather.Data", "src\ParityFactory.Weather.Data\ParityFactory.Weather.Data.csproj", "{ADFF54A9-2DD3-45B8-A4BC-099E5B4980C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{C1AF5953-C13F-4662-9F9B-2AEA2AD1C9D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1AF5953-C13F-4662-9F9B-2AEA2AD1C9D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1AF5953-C13F-4662-9F9B-2AEA2AD1C9D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFF54A9-2DD3-45B8-A4BC-099E5B4980C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFF54A9-2DD3-45B8-A4BC-099E5B4980C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFF54A9-2DD3-45B8-A4BC-099E5B4980C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFF54A9-2DD3-45B8-A4BC-099E5B4980C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

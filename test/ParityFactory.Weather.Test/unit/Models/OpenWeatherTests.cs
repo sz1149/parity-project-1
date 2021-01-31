@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParityFactory.Weather.Models.OpenWeatherApi;
@@ -9,22 +10,57 @@ namespace ParityFactory.Weather.Test.unit.Models
     public class OpenWeatherTests
     {
         [TestMethod]
-        public void Test_ApiResponse_Deserializes_To_Object()
+        public void Test_CurrentWeatherResponse_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
-                Path.Combine("unit", "JsonFiles", "CompleteApiResponse.json");
+                Path.Combine("unit", "JsonFiles", "CompleteApiResponseForCity.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
+            var currentWeather = JsonSerializer.Deserialize<CurrentWeatherResponse>(apiResponseText);
 
-            Assert.AreEqual("stations", apiResponse.Base);
+            Assert.AreEqual(4853828, currentWeather.City.Id);
+            Assert.AreEqual("Des Moines", currentWeather.City.Name);
+            Assert.AreEqual(1612013281, currentWeather.City.Sunrise);
+            Assert.AreEqual(1612049244, currentWeather.City.Sunset);
+            Assert.AreEqual(-21600, currentWeather.City.TimezoneOffset);
+
+            Assert.AreEqual(41.6005f, currentWeather.City.Coordinate.Latitude);
+            Assert.AreEqual(-93.6091f, currentWeather.City.Coordinate.Longitude);
+
+            Assert.AreEqual(40, currentWeather.WeatherReadings.Count);
+
+            var weatherReading = currentWeather.WeatherReadings.First();
+            Assert.AreEqual(1612072800, weatherReading.Timestamp);
+
+            Assert.AreEqual(1, weatherReading.Observations.Length);
+            Assert.AreEqual(601, weatherReading.Observations[0].Id);
+            Assert.AreEqual("Snow", weatherReading.Observations[0].Title);
+            Assert.AreEqual("snow", weatherReading.Observations[0].Description);
+            Assert.AreEqual("13n", weatherReading.Observations[0].Icon);
+
+            Assert.AreEqual(272.86f, weatherReading.Measurement.Temperature);
+            Assert.AreEqual(266.42f, weatherReading.Measurement.FeelsLikeTemperature);
+            Assert.AreEqual(272.86f, weatherReading.Measurement.MinimumTemperature);
+            Assert.AreEqual(272.94f, weatherReading.Measurement.MaximumTemperature);
+            Assert.AreEqual((short)1008, weatherReading.Measurement.Pressure);
+            Assert.AreEqual((byte)96, weatherReading.Measurement.Humidity);
+
+            Assert.AreEqual((byte)95, weatherReading.Cloud.PercentCloudiness);
+
+            Assert.AreEqual(6.19f, weatherReading.Wind.Speed);
+            Assert.AreEqual((short)356, weatherReading.Wind.Degrees);
+
+            Assert.AreEqual(1.71f, weatherReading.Snow.VolumeInPastThreeHours);
+        }
+
+        [TestMethod]
+        public void Test_Weather_Deserializes_To_Object()
+        {
+            var apiResponseJsonFilename =
+                Path.Combine("unit", "JsonFiles", "CompleteWeatherRecord.json");
+            var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
+
             Assert.AreEqual(1601055181, apiResponse.Timestamp);
-            Assert.AreEqual(3600, apiResponse.TimezoneOffset);
-            Assert.AreEqual(2643743, apiResponse.Id);
-            Assert.AreEqual("London", apiResponse.Name);
-            Assert.AreEqual(200, apiResponse.Cod);
-
-            Assert.AreEqual(51.51f, apiResponse.Coordinate.Latitude);
-            Assert.AreEqual(-0.13f, apiResponse.Coordinate.Longitude);
 
             Assert.AreEqual(1, apiResponse.Observations.Length);
             Assert.AreEqual(803, apiResponse.Observations[0].Id);
@@ -49,10 +85,6 @@ namespace ParityFactory.Weather.Test.unit.Models
 
             Assert.AreEqual((short)200, apiResponse.Snow.VolumeInPastHour);
             Assert.AreEqual((short)800, apiResponse.Snow.VolumeInPastThreeHours);
-
-            Assert.AreEqual("GB", apiResponse.SystemData.CountryCode);
-            Assert.AreEqual(1601013115, apiResponse.SystemData.Sunrise);
-            Assert.AreEqual(1601056333, apiResponse.SystemData.Sunset);
         }
 
         /// <summary>
@@ -60,22 +92,14 @@ namespace ParityFactory.Weather.Test.unit.Models
         /// Reference: https://openweathermap.org/current#list
         /// </summary>
         [TestMethod]
-        public void Test_ApiResponse_With_MissingModels_Deserializes_To_Object()
+        public void Test_Weather_With_MissingModels_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
                 Path.Combine("unit", "JsonFiles", "MissingModelsResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
 
-            Assert.AreEqual("stations", apiResponse.Base);
             Assert.AreEqual(1601055181, apiResponse.Timestamp);
-            Assert.AreEqual(3600, apiResponse.TimezoneOffset);
-            Assert.AreEqual(2643743, apiResponse.Id);
-            Assert.AreEqual("London", apiResponse.Name);
-            Assert.AreEqual(200, apiResponse.Cod);
-
-            Assert.AreEqual(51.51f, apiResponse.Coordinate.Latitude);
-            Assert.AreEqual(-0.13f, apiResponse.Coordinate.Longitude);
 
             Assert.IsNull(apiResponse.Observations);
             Assert.IsNull(apiResponse.Measurement);
@@ -83,31 +107,15 @@ namespace ParityFactory.Weather.Test.unit.Models
             Assert.IsNull(apiResponse.Rain);
             Assert.IsNull(apiResponse.Snow);
             Assert.IsNull(apiResponse.Wind);
-
-            Assert.AreEqual("GB", apiResponse.SystemData.CountryCode);
-            Assert.AreEqual(1601013115, apiResponse.SystemData.Sunrise);
-            Assert.AreEqual(1601056333, apiResponse.SystemData.Sunset);
         }
 
         [TestMethod]
-        public void Test_ApiResponse_With_MissingModelProperties_Deserializes_To_Object()
+        public void Test_Weather_With_MissingModelProperties_Deserializes_To_Object()
         {
             var apiResponseJsonFilename =
                 Path.Combine("unit", "JsonFiles", "MissingModelPropertiesResponse.json");
             var apiResponseText = File.ReadAllText(apiResponseJsonFilename);
-            var apiResponse = JsonSerializer.Deserialize<Response>(apiResponseText);
-
-            Assert.AreEqual("stations", apiResponse.Base);
-            Assert.AreEqual(1601055181, apiResponse.Timestamp);
-            Assert.AreEqual(3600, apiResponse.TimezoneOffset);
-            Assert.AreEqual(2643743, apiResponse.Id);
-            Assert.AreEqual("London", apiResponse.Name);
-            Assert.AreEqual(200, apiResponse.Cod);
-
-            Assert.AreEqual(51.51f, apiResponse.Coordinate.Latitude);
-            Assert.AreEqual(-0.13f, apiResponse.Coordinate.Longitude);
-
-            Assert.AreEqual(0, apiResponse.Observations.Length);
+            var apiResponse = JsonSerializer.Deserialize<Weather.Models.OpenWeatherApi.Weather>(apiResponseText);
 
             Assert.IsNull(apiResponse.Measurement.Temperature);
             Assert.IsNull(apiResponse.Measurement.FeelsLikeTemperature);
@@ -126,10 +134,6 @@ namespace ParityFactory.Weather.Test.unit.Models
 
             Assert.IsNull(apiResponse.Wind.Speed);
             Assert.IsNull(apiResponse.Wind.Degrees);
-
-            Assert.AreEqual("GB", apiResponse.SystemData.CountryCode);
-            Assert.AreEqual(1601013115, apiResponse.SystemData.Sunrise);
-            Assert.AreEqual(1601056333, apiResponse.SystemData.Sunset);
         }
     }
 }
