@@ -57,7 +57,8 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
                 if (response.IsSuccessStatusCode)
                 {
                     downloadedFilename = await SaveAsync(city, await response.Content.ReadAsStreamAsync());
-                    Console.WriteLine($"Saved data for {city} to {downloadedFilename}");    
+                    stopWatch.Stop();
+                    Console.WriteLine($"Saved data for {city} to {downloadedFilename} in {stopWatch.Elapsed.TotalMilliseconds}ms");    
                 }
                 else
                 {

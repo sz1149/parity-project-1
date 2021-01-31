@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using ParityFactory.Weather.Services.Extensions;
@@ -20,7 +21,13 @@ namespace ParityFactory.Weather
 
             var serviceProvider = BuildServiceProvider();
             var commandHandler = serviceProvider.GetService<ICommandHandler>();
+            
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             await commandHandler.ExecuteAsync(args[0]);
+            stopWatch.Stop();
+            Console.WriteLine();
+            Console.WriteLine($"Execution of {args[0]} completed in {stopWatch.Elapsed.TotalMilliseconds}ms");
         }
 
         [ExcludeFromCodeCoverage]
