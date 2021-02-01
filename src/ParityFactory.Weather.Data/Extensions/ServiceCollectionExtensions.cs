@@ -6,7 +6,7 @@ namespace ParityFactory.Weather.Data.Extensions
     {
         public static IServiceCollection AddDataRepository(this IServiceCollection services)
         {
-            services.AddSingleton<IDataRepository, SqlLiteDataRepository>();
+            services.AddSingleton<IDataRepository, DataRepository>();
 
             return services;
         }

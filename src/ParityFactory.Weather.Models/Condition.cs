@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ParityFactory.Weather.Models
 {
+    [Keyless]
     public class Condition
     {
         [JsonPropertyName("id")]

@@ -4,6 +4,7 @@ namespace ParityFactory.Weather.Models.Data
     {
         Iowa = 1
     }
+
     public class Region
     {
         public RegionId Id { get; set; }

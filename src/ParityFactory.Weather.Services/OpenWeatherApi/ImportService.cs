@@ -30,13 +30,13 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
         {
             var (apiResponses, locations) = await GetApiResponsesAsync();
             var (conditions, weatherConditions, weatherRecords) = Transform(apiResponses);
-            await _dataRepository.BulkInsertAsync("RegionStaging",
-                new List<Region> {new Region {Id = RegionId.Iowa, Name = "Iowa"}});
-            await _dataRepository.BulkInsertAsync("LocationStaging", locations);
-            await _dataRepository.BulkInsertAsync("ConditionStaging", conditions);
-            await _dataRepository.BulkInsertAsync("WeatherStaging", weatherRecords);
-            await _dataRepository.BulkInsertAsync("WeatherConditionStaging", weatherConditions);
-            await _dataRepository.BulkInsertAsync("ConditionStaging", conditions);
+
+            _dataRepository.BulkInsert("staging.Location", locations);
+            // todo: migrate proc
+            _dataRepository.BulkInsert("staging.Condition", conditions);
+            // todo: migrate proc
+            _dataRepository.BulkInsert("dbo.Weather", weatherRecords);
+            _dataRepository.BulkInsert("dbo.WeatherCondition", weatherConditions);
         }
 
         public virtual async Task<(List<CurrentWeatherResponse>, List<Location>)> GetApiResponsesAsync()
@@ -45,20 +45,22 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
             stopWatch.Start();
 
             var apiResponses = new List<CurrentWeatherResponse>();
-            var cities = new List<Location>();
+            var locations = new Dictionary<long, Location>();
             var filesToImport = DirectoryUtil.GetAllUnprocessedFiles(_dataDirectory);
             foreach (var file in filesToImport)
             {
                 var contents = await File.ReadAllTextAsync(file);
                 var apiResponse = JsonSerializer.Deserialize<CurrentWeatherResponse>(contents);
                 apiResponses.Add(apiResponse);
-                cities.Add(_autoMapping.Map<City, Location>(apiResponse.City));
+                var location = _autoMapping.Map<City, Location>(apiResponse.City);
+                if (!locations.ContainsKey(location.Id))
+                    locations.Add(location.Id, location);
             }
 
             stopWatch.Stop();
             Console.WriteLine(
                 $"Loaded {apiResponses.Count} unprocessed files in {stopWatch.Elapsed.TotalMilliseconds}ms");
-            return (apiResponses, cities);
+            return (apiResponses, locations.Values.ToList());
         }
 
         public (List<Condition>, List<WeatherCondition>, List<Models.Data.Weather>) Transform(
@@ -83,8 +85,7 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
                         var weatherCondition = new WeatherCondition
                         {
                             ConditionId = condition.Id,
-                            Timestamp = weatherObservation.Timestamp,
-                            LocationId = apiResponse.City.Id
+                            WeatherId = weatherRecord.Id
                         };
                         weatherConditions.Add(weatherCondition);
                         if (!conditionDictionary.ContainsKey(condition.Id))

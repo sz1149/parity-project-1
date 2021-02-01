@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using ParityFactory.Weather.Models.OpenWeatherApi;
 
@@ -8,6 +9,7 @@ namespace ParityFactory.Weather.Models.Mappings
         public WeatherProfile()
         {
             CreateMap<WeatherObservation, Data.Weather>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.LocationId, opt => opt.Ignore()) // set post mapping
                 .ForMember(dest => dest.PercentCloudiness,
                     opt => opt.MapFrom(src => src.Cloud != null ? src.Cloud.PercentCloudiness : null))
@@ -31,8 +33,8 @@ namespace ParityFactory.Weather.Models.Mappings
                     opt => opt.MapFrom(src => src.Snow != null ? src.Snow.VolumeInPastHour : null))
                 .ForMember(dest => dest.SnowInPastThreeHours,
                     opt => opt.MapFrom(src => src.Snow != null ? src.Snow.VolumeInPastThreeHours : null))
-                .ForMember(dest => dest.Speed, opt => opt.MapFrom(src => src.Wind != null ? src.Wind.Speed : null))
-                .ForMember(dest => dest.Degrees, opt => opt.MapFrom(src => src.Wind != null ? src.Wind.Degrees : null))
+                .ForMember(dest => dest.WindSpeed, opt => opt.MapFrom(src => src.Wind != null ? src.Wind.Speed : null))
+                .ForMember(dest => dest.WindDirectionDegrees, opt => opt.MapFrom(src => src.Wind != null ? src.Wind.Degrees : null))
                 .ForMember(dest => dest.TimezoneOffset, opt => opt.Ignore()) // set post mapping
                 .ForMember(dest => dest.Sunrise, opt => opt.Ignore()) // set post mapping
                 .ForMember(dest => dest.Sunset, opt => opt.Ignore()) // set post mapping

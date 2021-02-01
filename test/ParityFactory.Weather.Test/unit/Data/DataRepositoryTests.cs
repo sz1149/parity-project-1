@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParityFactory.Weather.Data;
 
@@ -10,27 +9,16 @@ namespace ParityFactory.Weather.Test.unit.Data
     public class DataRepositoryTests
     {
         private readonly string _connectionString;
-        private readonly SqlLiteDataRepository _dataRepository;
+        private readonly DataRepository _dataRepository;
 
         public DataRepositoryTests()
         {
-            _connectionString = "Data Source=:memory:";
+            _connectionString = "Data Source=localhost:1433; Initial Catalog=dbo; User id=sa; Password=LocalDev@Passw0rd>;";
             Environment.SetEnvironmentVariable("DB_CONNECTION", _connectionString);
             
-            using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
-            
-            var command = connection.CreateCommand();
-            command.CommandText = @"CREATE TABLE Data(test TEXT)";
-            command.ExecuteNonQuery();
-            
-            _dataRepository = new SqlLiteDataRepository();
+            var dataRepository = new DataRepository();
+ 
         }
 
-        [TestMethod]
-        public async Task Test_BulkInsertAsync()
-        {
-            await _dataRepository.BulkInsertAsync("data", "test");
-        }
     }
 }
