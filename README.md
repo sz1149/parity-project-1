@@ -1,8 +1,6 @@
 # Weather ETL
 This project downloads current weather information from the OpenWeather API and transforms it into SQL data.  Original requirements and project goals can be found in [the requirements file](requirements.md).
 
-[[_TOC_]]
-
 ## User Scripts
 - Download weather data files to disk:
 ```bash
