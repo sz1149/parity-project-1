@@ -28,18 +28,22 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
 
         public virtual async Task ImportAsync()
         {
-            var (apiResponses, locations) = await GetApiResponsesAsync();
+            var (filesToImport, apiResponses, locations) = await GetApiResponsesAsync();
             var (conditions, weatherConditions, weatherRecords) = Transform(apiResponses);
 
             _dataRepository.BulkInsert("staging.Location", locations);
+            await _dataRepository.ExecuteStoredProcedureAsync("dbo.ImportLocations", null);
             // todo: migrate proc
             _dataRepository.BulkInsert("staging.Condition", conditions);
+            await _dataRepository.ExecuteStoredProcedureAsync("dbo.ImportConditions", null);
             // todo: migrate proc
             _dataRepository.BulkInsert("dbo.Weather", weatherRecords);
             _dataRepository.BulkInsert("dbo.WeatherCondition", weatherConditions);
+            
+            DirectoryUtil.ArchiveFiles(_dataDirectory, filesToImport, DateTime.UtcNow);
         }
 
-        public virtual async Task<(List<CurrentWeatherResponse>, List<Location>)> GetApiResponsesAsync()
+        public virtual async Task<(string[], List<CurrentWeatherResponse>, List<Location>)> GetApiResponsesAsync()
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -60,7 +64,7 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
             stopWatch.Stop();
             Console.WriteLine(
                 $"Loaded {apiResponses.Count} unprocessed files in {stopWatch.Elapsed.TotalMilliseconds}ms");
-            return (apiResponses, locations.Values.ToList());
+            return (filesToImport, apiResponses, locations.Values.ToList());
         }
 
         public (List<Condition>, List<WeatherCondition>, List<Models.Data.Weather>) Transform(

@@ -18,14 +18,17 @@ namespace ParityFactory.Weather.Services
             return Directory.GetFileSystemEntries(directory);
         }
 
-        public static void ArchiveUnprocessedFiles(string baseDir, DateTime utcDateTime)
+        public static void ArchiveFiles(string baseDir, string[] filesToArchive, DateTime utcDateTime)
         {
-            var source = Path.Combine(baseDir, "unprocessed");
-            var destination = Path.Combine("archive", utcDateTime.Year.ToString(), utcDateTime.Month.ToString(),
+            var destination = Path.Combine(baseDir, "archive", utcDateTime.Year.ToString(), utcDateTime.Month.ToString(),
                 utcDateTime.Day.ToString(),
                 utcDateTime.Hour.ToString());
             Directory.CreateDirectory(destination);
-            Directory.Move(source, destination);
+            foreach (var file in filesToArchive)
+            {
+                var fileInfo = new FileInfo(file);
+                File.Move(file, Path.Combine(destination, fileInfo.Name));
+            }
         }
     }
 }
