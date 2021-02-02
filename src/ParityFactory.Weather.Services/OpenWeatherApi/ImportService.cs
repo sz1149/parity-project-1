@@ -31,12 +31,12 @@ namespace ParityFactory.Weather.Services.OpenWeatherApi
             var (filesToImport, apiResponses, locations) = await GetApiResponsesAsync();
             var (conditions, weatherConditions, weatherRecords) = Transform(apiResponses);
 
-            _dataRepository.BulkInsert("staging.Location", locations);
+            _dataRepository.BulkInsert("stage.Location", locations);
             await _dataRepository.ExecuteStoredProcedureAsync("dbo.ImportLocations", null);
-            // todo: migrate proc
-            _dataRepository.BulkInsert("staging.Condition", conditions);
+
+            _dataRepository.BulkInsert("stage.Condition", conditions);
             await _dataRepository.ExecuteStoredProcedureAsync("dbo.ImportConditions", null);
-            // todo: migrate proc
+
             _dataRepository.BulkInsert("dbo.Weather", weatherRecords);
             _dataRepository.BulkInsert("dbo.WeatherCondition", weatherConditions);
             

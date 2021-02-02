@@ -1,5 +1,5 @@
 # Weather ETL
-This project downloads current weather information from the OpenWeather API and transforms it into SQL data.
+This project downloads current weather information from the OpenWeather API and transforms it into SQL data.  Original requirements and project goals can be found in [the requirements file](requirements.md).
 
 [[_TOC_]]
 
@@ -21,47 +21,49 @@ This project downloads current weather information from the OpenWeather API and 
 
 ## Developer notes
 To run this project locally:
-* Setup a SQL Server instance to connect to or use docker `./local/sqlServerDocker.sh
-* Connect to SQL Server to create tables from files in the `sql` folder, see section below for ordering
- * Install .NET 5.0 if not installed
- * Set/Configure environment variables (section below)
- * Run from the command line using dotnet run or configure your IDE
- * Entry point is project ParityFactory.Weather
- * Program.cs is expecting an argument (download,import,aggregate)
+* Setup SQL Server instance or use docker script is at `./local/sqlServerDocker.sh`
+* Connect to SQL Server and create objects in the Weather schema `./weather.sql`
+* Install .NET 5.0 if not installed
+* Set/Configure environment variables (section below)
+* Run from the command line using dotnet run or configure your IDE
+* Entry point is project ParityFactory.Weather
+* Program.cs is expecting an argument (download,import,aggregate)
  
 ### Environment variables
 * DATA_DIRECTORY
   * Directory to save files to
 * WEATHER_API_ENDPOINT
   * API endpoint to call
+    * Example: http://api.openweathermap.org/data/2.5/forecast
 * WEATHER_API_ENDPOINT_KEY
   * API key to use
 * MAX_CONCURRENCY
-  * Maximum concurrency for download from weather API
+  * Maximum download concurrency from weather API
 * DB_CONNECTION
   * Database connection string
+    * Example: "Data Source=localhost,1433; Initial Catalog=Weather; User id=sa; Password=;"
 
 ## Architecture
-![Architecture Diagram](APIGatewayLambdaAuthArchitecture.png)
+![Architecture Diagram](OpenWeatherETL.png)
 
 ### Explanation
-1. Client makes a request with an Authorization Bearer token.
-1. AWS API Gateway invokes ApiGatewayLambdaAuthorizer for protected routes
-1. ApiGatewayLambdaAuthorizer:
-   - Verifies the JWT signature based on issuer public key
-     - Public keys are loaded into memory on application startup.  
-     - Lambda is typically kept warm based on volume.
-   - Pulls user data from Redis or OnFarm (ext.B2CUserProfile, dbo.tSECUsers) based on issuer
-   - Caches response to Redis if pulled from OnFarm
-   - Builds Policy (explicit allow)
-   - Exception("Unauthorized") if failures (validating token, etc.) results in 401 unauthorized to client
-1. Response/requested resource is evaluated against policy:
-   - Allowed = request forwarded to destination lambda, response sent back to client
-   - Denied = 403/forbidden sent back to client
-
-## Tokens/Claims
+* A user runs a script a request to download data from the OpenWeather API `download`
+  * `MAX_CONCURRENCY` can be used to throttle downloads
+* Data for 10 cities is downloaded to `DATA_DIRECTORY`/unprocessed
+* A user then runs a script to import data into the [Weather database](SQLDiagram.png) `import`
+  * Files from the unprocessed folder are read
+  * File contents are transformed into objects
+  * Data is bulk loaded into the appropriate tables
+  * Location and Condition data is first loaded to a staging table.  Procedures perform an update then insert into the dbo schema.
+  * Unprocessed files are moved to `DATA_DIRECTORY`/unprocessed/YYYY/MM/DD/HH
+* A user then runs a script to aggregate data `aggregate`
+  * The last calculation time of the aggregate calculation for a region is retrieved from the database
+  * Raw detail records for a region that were added after the last calculation time are retrieved from the database
+  * A single loop is used to calculate multiple aggregates
+  * Results are bulk loaded to the Aggregate table 
 
 ## Execute unit tests
+- Unit test coverage for this project is incomplete given time constraints; the 80% threshold will fail
 - Using local dotnet SDK (note you will need to set environment variables, see above):
 ```
 dotnet test \

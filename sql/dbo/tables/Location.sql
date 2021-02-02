@@ -11,19 +11,10 @@ create table dbo.Location
 go
 
 alter table dbo.Location
-	add constraint FK_Location_Region_RegionId
+	with check add constraint FK_Location_Region_RegionId
 		foreign key (RegionId) references dbo.Region(RegionId)
 go
 
-/*testing insert*/
-insert into dbo.Location(Id, RegionId, Name, Latitude, Longitude)
-values (1, 1, 'testName', 41.6005, -93.6091)
-go
-
-select *
-from dbo.Location
-go
-
-delete from dbo.Location
-where Id = 1
+alter table dbo.Location
+    check constraint FK_Location_Region_RegionId
 go

@@ -1,4 +1,4 @@
-create table staging.Condition
+create table stage.Condition
 (
 	Id smallint not null primary key,
 	Description nvarchar(1024) not null,

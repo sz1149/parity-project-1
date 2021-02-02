@@ -26,6 +26,10 @@ create table dbo.Weather
 go
 
 alter table dbo.Weather
-	add constraint FK_Weather_Location_LocationId
+	with check add constraint FK_Weather_Location_LocationId
 		foreign key (LocationId) references dbo.Location(Id)
+go
+
+alter table dbo.Weather
+    check constraint FK_Weather_Location_LocationId
 go

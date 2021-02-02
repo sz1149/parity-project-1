@@ -6,12 +6,21 @@ create table dbo.WeatherCondition
 )
 go
 
+
 alter table dbo.WeatherCondition
-	add constraint FK_WeatherCondition_Weather_WeatherId
+	with check add constraint FK_WeatherCondition_Weather_WeatherId
 		foreign key (WeatherId) references dbo.Weather(Id)
 go
 
 alter table dbo.WeatherCondition
-	add constraint FK_WeatherCondition_Condition_ConditionId
+    check constraint FK_WeatherCondition_Weather_WeatherId
+go
+
+alter table dbo.WeatherCondition
+	with check add constraint FK_WeatherCondition_Condition_ConditionId
 		foreign key (ConditionId) references dbo.Condition(Id)
+go
+
+alter table dbo.WeatherCondition
+    check constraint FK_WeatherCondition_Condition_ConditionId
 go
