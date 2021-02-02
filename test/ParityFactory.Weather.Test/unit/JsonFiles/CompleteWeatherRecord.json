@@ -1,0 +1,35 @@
+{
+  "weather": [
+    {
+      "id": 803,
+      "main": "Clouds",
+      "description": "broken clouds",
+      "icon": "04d"
+    }
+  ],
+  "main": {
+    "temp": 286.33,
+    "feels_like": 278.88,
+    "temp_min": 285.37,
+    "temp_max": 287.04,
+    "pressure": 1007,
+    "humidity": 42
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 7.93,
+    "deg": 314
+  },
+  "clouds": {
+    "all": 77
+  },
+  "rain": {
+    "1h": 200,
+    "3h": 800
+  },
+  "snow": {
+    "1h": 200,
+    "3h": 800
+  },
+  "dt": 1601055181
+}

@@ -1,0 +1,10 @@
+\bin/
+\obj/
+\.vs/
+*.nupkg
+*.rdb
+*.xml
+lcov.info
+lcov_html/
+*.sln.DotSettings.user
+dataFiles
